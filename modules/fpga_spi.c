@@ -29,7 +29,7 @@
 #include "at24mac.h"
 #include "sdr.h"
 
-#define FPGA_SPI_BITRATE                10000000
+#define FPGA_SPI_BITRATE                10000
 #define FPGA_SPI_FRAME_SIZE             8
 
 /* Write one byte on the specified address on the FPGA RAM */
@@ -82,6 +82,10 @@ void vTaskFPGA_COMM( void * Parameters )
     /* Read Card ID from EEPROM (6 bytes) */
     /* Note that the EUI48 spans from cardID[0] to cardID[1] */
     at24mac_read_eui(CHIP_ID_EEPROM, (uint8_t *)&diag->cardID[0], 6,  10);
+    // DEBUG: Print full EUI48
+    printf("EUI48: ");
+    for ( i = 0; i < 6; i++ ) printf("%02X ", ((uint8_t *) diag->cardID)[i]);
+    printf("\n");
 
     /* AMC IPMI address */
     diag->ipmi_addr = ipmb_addr;
